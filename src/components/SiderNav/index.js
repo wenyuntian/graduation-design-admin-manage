@@ -3,85 +3,52 @@ import CustomMenu from "../CustomMenu/index";
 
 const menus = [
   {
-    title: '首页',
+    title: '博客首页',
     icon: 'home',
     key: '/home'
   },
   {
-    title: '基本组件',
-    icon: 'laptop',
-    key: '/home/general',
+    title: '统计图表',
+    icon: 'line-chart',
+    key: '/home/charts'
+  },
+  {
+    title: '博客模块',
+    icon: 'file-text',
+    key: '/home/article/list',
     subs: [
-      {key: '/home/general/button', title: '按钮', icon: '',},
-      {key: '/home/general/icon', title: '图标', icon: '',},
+      {key: '/home/article/list', title: '文章管理', icon: ''},
+      {key: '/home/article/write', title: '写文章', icon: ''},
+      {key: '/home/article/category', title: '技术分类', icon: ''},
     ]
   },
   {
-    title: '导航组件',
-    icon: 'bars',
-    key: '/home/navigation',
-    subs: [
-      {key: '/home/navigation/dropdown', title: '下拉菜单', icon: ''},
-      {key: '/home/navigation/menu', title: '导航菜单', icon: ''},
-      {key: '/home/navigation/steps', title: '步骤条', icon: ''},
-    ]
-  },
-  {
-    title: '输入组件',
+    title: '展示信息',
     icon: 'edit',
-    key: '/home/entry',
+    key: '/home/display/author',
     subs: [
-      {
-        key: '/home/entry/form',
-        title: '表单',
-        icon: '',
-        subs: [
-          {key: '/home/entry/form/basic-form', title: '基础表单', icon: ''},
-          {key: '/home/entry/form/step-form', title: '分步表单', icon: ''}
-        ]
-      },
-      {key: '/home/entry/upload', title: '上传', icon: ''},
+      {key: '/home/display/author', title: '个人信息', icon: ''},
+      {key: '/home/display/carousel', title: '首页轮播图', icon: ''},
     ]
   },
   {
-    title: '显示组件',
-    icon: 'desktop',
-    key: '/home/display',
+    title: '访客模块',
+    icon: 'user',
+    key: '/home/visitor/record',
     subs: [
-      {key: '/home/display/carousel', title: '轮播图', icon: ''},
-      {key: '/home/display/collapse', title: '折叠面板', icon: ''},
-      {key: '/home/display/list', title: '列表', icon: ''},
-      {key: '/home/display/table', title: '表格', icon: ''},
-      {key: '/home/display/tabs', title: '标签页', icon: '',},
+      {key: '/home/visitor/record', title: '访客记录', icon: '',},
+      {key: '/home/visitor/statistical', title: '访客统计', icon: ''},
+      {key: '/home/visitor/blacklist', title: '黑名单', icon: '',}
     ]
   },
   {
-    title: '反馈组件',
-    icon: 'message',
-    key: '/home/feedback',
-    subs: [
-      {key: '/home/feedback/modal', title: '对话框', icon: '',},
-      {key: '/home/feedback/notification', title: '通知提醒框', icon: ''},
-      {key: '/home/feedback/spin', title: '加载中', icon: '',}
-    ]
+    title: '友情链接',
+    icon: 'paper-clip',
+    key: '/home/links',
   },
   {
-    title: '其它',
-    icon: 'bulb',
-    key: '/home/other',
-    subs:[
-      {key: '/home/other/animation', title: '动画', icon: '',},
-      {key: '/home/other/gallery', title: '画廊', icon: '',},
-      {key:'/home/other/draft',title:'富文本',icon:''},
-      {key:'/home/other/chart',title:'图表',icon:''},
-      {key:'/home/other/loading',title:'加载动画',icon:''},
-      {key:'/home/other/404',title:'404',icon:''},
-      {key:'/home/other/springText',title:'弹性文字',icon:''},
-    ]
-  },
-  {
-    title: '关于',
-    icon: 'info-circle-o',
+    title: '关于博客',
+    icon: 'question-circle',
     key: '/home/about'
   }
 ]
@@ -103,7 +70,7 @@ const styles = {
   logo: {
     height: '32px',
     background: 'rgba(255, 255, 255, .2)',
-    margin: '16px'
+    margin: '16px',
   }
 }
 

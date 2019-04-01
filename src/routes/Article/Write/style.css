@@ -1,0 +1,41 @@
+.write-article-header button{
+    margin: 0 8px;
+}
+.editor-class{
+    min-height: 360px;
+    border: 1px solid #F1F1F1;
+    border-top: none;
+    margin-top: -5px;
+    padding: 0 10px;
+}
+.aside-title .ant-card-body{
+    padding: 0;
+}
+.ant-list-header {
+    font-weight: 900;
+    font-size: 14px;
+    margin-top: 25px;
+}
+.ant-list-split .ant-list-header {
+    border-bottom: none;
+}
+.article-list button, .category-list button{
+    border: none;
+}
+.article-list-icon{
+    margin-right: 3px;
+}
+.category-list-dot{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+.button-group{
+    text-align: center;
+    padding: 12px;
+}
+.button-group button{
+    margin: 0 12px;
+}

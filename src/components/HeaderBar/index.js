@@ -46,19 +46,14 @@ class HeaderBar extends React.Component {
     const notLogin = (
       <div>
         <Link to={{pathname: '/login', state: {from: location}}} style={{color: 'rgba(0, 0, 0, 0.65)'}}>登录</Link>&nbsp;
-        <img src={require('../../assets/img/defaultUser.jpg')} alt=""/>
       </div>
     )
     const menu = (
       <Menu className='menu'>
-        <Menu.ItemGroup title='用户中心' className='menu-group'>
-          <Menu.Item>你好 - {isAuthenticated()}</Menu.Item>
-          <Menu.Item>个人信息</Menu.Item>
+        <Menu.ItemGroup title='' className='menu-group'>
+          <Menu.Item>欢迎: {isAuthenticated()}</Menu.Item>
+          <Menu.Item><Link to = '/home/display/author'>个人设置</Link></Menu.Item>
           <Menu.Item><span onClick={this.logout}>退出登录</span></Menu.Item>
-        </Menu.ItemGroup>
-        <Menu.ItemGroup title='设置中心' className='menu-group'>
-          <Menu.Item>个人设置</Menu.Item>
-          <Menu.Item>系统设置</Menu.Item>
         </Menu.ItemGroup>
       </Menu>
     )
@@ -76,11 +71,6 @@ class HeaderBar extends React.Component {
         <div style={{lineHeight: '64px', float: 'right'}}>
           <ul className='header-ul'>
             <li><Icon type={icon} onClick={this.screenfullToggle}/></li>
-            <li onClick={() => this.setState({count: 0})}>
-              <Badge count={appStore.isLogin ? count : 0} overflowCount={99} style={{marginRight: -17}}>
-                <Icon type="notification"/>
-              </Badge>
-            </li>
             <li>
               {appStore.isLogin ? login : notLogin}
             </li>

@@ -6,8 +6,8 @@ import PrivateRoute from '../PrivateRoute'
 const Home = LoadableComponent(()=>import('../../routes/Home/index'))  //参数一定要是函数，否则不会懒加载，只会代码拆分
 
 //基本组件Demo
-const ButtonDemo = LoadableComponent(()=>import('../../routes/General/ButtonDemo/index'))
-const IconDemo = LoadableComponent(()=>import('../../routes/General/IconDemo/index'))
+const ArticleManage = LoadableComponent(()=>import('../../routes/Article/Manage/index'))
+const ArticleWrite = LoadableComponent(()=>import('../../routes/Article/Write/index'))
 
 //导航组件Demo
 const DropdownDemo = LoadableComponent(()=>import('../../routes/Navigation/DropdownDemo/index'))
@@ -35,7 +35,7 @@ const NotificationDemo = LoadableComponent(()=>import('../../routes/Feedback/Not
 const AnimationDemo = LoadableComponent(()=>import('../../routes/Other/AnimationDemo/index'))
 const GalleryDemo = LoadableComponent(()=>import('../../routes/Other/GalleryDemo/index'))
 const DraftDemo = LoadableComponent(()=>import('../../routes/Other/DraftDemo/index'))
-const ChartDemo = LoadableComponent(()=>import('../../routes/Other/ChartDemo/index'))
+const ChartView = LoadableComponent(()=>import('../../routes/Other/ChartView/index'))
 const LoadingDemo = LoadableComponent(()=>import('../../routes/Other/LoadingDemo/index'))
 const ErrorPage = LoadableComponent(()=>import('../../routes/Other/ErrorPage/index'))
 const SpringText = LoadableComponent(()=>import('../../routes/Other/SpringText/index'))
@@ -51,35 +51,22 @@ class ContentMain extends React.Component {
         <Switch>
           <PrivateRoute exact path='/home' component={Home}/>
 
-          <PrivateRoute exact path='/home/general/button' component={ButtonDemo}/>
-          <PrivateRoute exact path='/home/general/icon' component={IconDemo}/>
+          <PrivateRoute exact path='/home/charts' component={ChartView}/>
 
-          <PrivateRoute exact path='/home/navigation/dropdown' component={DropdownDemo}/>
-          <PrivateRoute exact path='/home/navigation/menu' component={MenuDemo}/>
-          <PrivateRoute exact path='/home/navigation/steps' component={StepsDemo}/>
 
-          <PrivateRoute exact path='/home/entry/form/basic-form' component={FormDemo1}/>
-          <PrivateRoute exact path='/home/entry/form/step-form' component={FormDemo2}/>
-          <PrivateRoute exact path='/home/entry/upload' component={UploadDemo}/>
+          <PrivateRoute exact path='/home/article/write' component={ArticleWrite}/>
+          <PrivateRoute exact path='/home/article/list' component={ArticleManage}/>
+          <PrivateRoute exact path='/home/article/category' component={MenuDemo}/>
 
-          <PrivateRoute exact path='/home/display/carousel' component={CarouselDemo}/>
-          <PrivateRoute exact path='/home/display/collapse' component={CollapseDemo}/>
-          <PrivateRoute exact path='/home/display/list' component={ListDemo}/>
-          <PrivateRoute exact path='/home/display/table' component={TableDemo}/>
-          <PrivateRoute exact path='/home/display/tabs' component={TabsDemo}/>
+          <PrivateRoute exact path='/home/display/author' component={StepsDemo}/>
+          <PrivateRoute exact path='/home/display/carousel' component={FormDemo1}/>
 
-          <PrivateRoute exact path='/home/feedback/modal' component={ModalDemo}/>
-          <PrivateRoute exact path='/home/feedback/notification' component={NotificationDemo}/>
-          <PrivateRoute exact path='/home/feedback/spin' component={SpinDemo}/>
+          <PrivateRoute exact path='/home/visitor/record' component={FormDemo2}/>
+          <PrivateRoute exact path='/home/visitor/statistical' component={UploadDemo}/>
+          <PrivateRoute exact path='/home/visitor/blacklist' component={CarouselDemo}/>
 
-          <PrivateRoute exact path='/home/other/animation' component={AnimationDemo}/>
-          <PrivateRoute exact path='/home/other/gallery' component={GalleryDemo}/>
-          <PrivateRoute exact path='/home/other/draft' component={DraftDemo}/>
-          <PrivateRoute exact path='/home/other/chart' component={ChartDemo}/>
-          <PrivateRoute exact path='/home/other/loading' component={LoadingDemo}/>
-          <PrivateRoute exact path='/home/other/404' component={ErrorPage}/>
-          <PrivateRoute exact path='/home/other/springText' component={SpringText}/>
-
+          <PrivateRoute exact path='/home/links' component={CollapseDemo}/>
+          
           <PrivateRoute exact path='/home/about' component={About}/>
 
           <Redirect exact from='/' to='/home'/>

@@ -1,0 +1,19 @@
+.card-item .ant-card-head-title {
+    font-weight: 900;
+    font-size: 16px;
+    color: #86837F;
+}
+.card-item .ant-card-body h2 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 500;
+}
+.card-item .ant-card-body .left{
+    float: left;
+}
+.card-item .ant-card-body .right{
+    float: right;
+}
+.card-item .ant-card-body .card-detail i {
+    margin-right: 2px;
+}
