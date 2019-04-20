@@ -25,10 +25,10 @@ const menus = [
   {
     title: '展示信息',
     icon: 'edit',
-    key: '/home/display/author',
+    key: '/home/display/personal',
     subs: [
-      {key: '/home/display/author', title: '个人信息', icon: ''},
-      {key: '/home/display/carousel', title: '首页轮播图', icon: ''},
+      {key: '/home/display/personal', title: '个人信息', icon: ''},
+      {key: '/home/display/carousel', title: '轮播图', icon: ''},
     ]
   },
   {
@@ -37,7 +37,6 @@ const menus = [
     key: '/home/visitor/record',
     subs: [
       {key: '/home/visitor/record', title: '访客记录', icon: '',},
-      {key: '/home/visitor/statistical', title: '访客统计', icon: ''},
       {key: '/home/visitor/blacklist', title: '黑名单', icon: '',}
     ]
   },

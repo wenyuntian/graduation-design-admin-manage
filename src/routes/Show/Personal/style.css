@@ -1,0 +1,41 @@
+.personal-information {
+    display: flex;
+    width: 100%;
+}
+
+.show-information .ant-list-item {
+    height: 84px;
+}
+
+.personal-information .information-item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    font-weight: 900;
+}
+
+.personal-information div {
+    flex: 4;
+}
+
+.avatar-uploader>.ant-upload {
+    width: 58px;
+    height: 58px;
+    padding: 0;
+}
+
+.avatar-uploader .ant-upload.ant-upload-select-picture-card {
+    margin: 0;
+}
+
+.personal-information .img-box .ant-upload img {
+    width: 58px;
+    height: 58px;
+}
+
+.personal-information .ant-upload {
+    width: 58px;
+}
+.modify-password .ant-form-item {
+    margin-bottom: 8px;
+}

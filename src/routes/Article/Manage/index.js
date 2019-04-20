@@ -1,143 +1,201 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {Card, Popconfirm,Tag, Button, Icon, Table, Divider, BackTop, Affix, Anchor, Form, InputNumber, Input} from 'antd'
-import axios from 'axios'
+import {Card,Tag, Button, Icon, Table, Divider, BackTop, Affix, Anchor, Form, InputNumber, Input} from 'antd'
+import fetch from '../../../utils/fetch'
 import CustomBreadcrumb from '../../../components/CustomBreadcrumb/index'
-
-const data = [{key:'1', id:'1', title:"深入浅出Node.js", category:"前端", tags: ["Node.js", "前端"], views: 1996, recommend: 1, status: 1, pushDate:"1996-06-15"},
-{key:'2', id:'2', title:"深入浅出React", category:"Linux", tags: ["Node.js", "前端","Node.js", "前端"], views: 2015, recommend: 0, status: 0, pushDate:"2015-06-15"}]
+import './style.css'
   
-  class ArticleList extends React.Component {
-    state = {
-      filteredInfo: null,
-      sortedInfo: null,
+class ArticleList extends React.Component {
+  state = {
+    selectedRowKeys: [],
+    articleList: [],
+    selectedArticle: [],
+    allArticle: []
+  };
+
+  componentWillMount(){
+    this.getAllArticles();
+  }
+
+  getAllArticles = () => {
+    fetch('get', '/api/article/getArticleClassification', null, (response) => {
+      const allArticle = response.data.allArticle;
+      this.setState({
+        articleList: allArticle,
+        allArticle: allArticle
+      })
+    })
+  }
+
+  deleteArticles = () => {
+    fetch('post', '/api/article/delete', {ids: this.state.selectedArticle}, () => {
+      const filterArticle = this.state.allArticle.filter((item) => {
+        return this.state.selectedArticle.indexOf(item._id) === -1
+        ? true
+        : false
+      })
+      this.setState({
+        articleList: filterArticle,
+        allArticle: filterArticle,
+        selectedArticle: []
+      })
+    })
+  }
+
+  recommendArticles = (id, isRecommend) => {
+    console.log(isRecommend)
+    const ids = id != null ? [id] : this.state.selectedArticle;
+    console.log(ids)
+
+    fetch('post', '/api/article/setRecommend', {ids: ids, isRecommend: isRecommend}, () => {
+      const recommendArticle = this.state.allArticle.map((item) => {
+        if(ids.indexOf(item._id) !== -1) {
+          item.isRecommend = isRecommend;
+          return item;
+        }
+        return item;
+      })
+
+      this.setState({
+        selectedRowKeys: [],
+        articleList: recommendArticle,
+        allArticle: recommendArticle,
+        selectedArticle: []
+      })
+    })
+  }
+
+  filterArticle = (key) => {
+    const statusMap = {
+      draftBox: 0,
+      hasPublish: 1,
+      hasDelete: 2
+    }
+
+    this.setState({
+      articleList: this.state.allArticle.filter((item) => {
+        if(key === "articleList") {
+          return true;
+        } 
+        return statusMap[key] === item.status
+      })
+    })
+    console.log(this.state.articleList)
+  }
+
+  testClock = (e) =>  {
+    console.log(e.currentTarget.getAttribute("data-id"))
+  }
+  render() {
+    let { sortedInfo } = this.state;
+    sortedInfo = sortedInfo || {};
+    const colorArray = ["#00796b", "#8e24aa", "#1e88e5", "#fb8c00", "#8e24aa"];
+
+    const columns = [{
+      title: '标题',
+      dataIndex: 'title',
+      align: "center"
+    }, {
+      title: '类别',
+      dataIndex: 'category',
+      align: "center"
+    }, {
+      title: '标签',
+      align: "center",
+      dataIndex: 'keyWords',
+      render: (text, record) => {
+        let length = colorArray.length;
+        return (<span>
+            {record.keyWords.map((item, index) => {
+                return <Tag key={index} color={colorArray[index % length]}>{item}</Tag>
+            })}
+        </span>)
+      }
+    }, {
+      title: '浏览量',
+      dataIndex: 'views',
+      align: "center",
+      sorter: (a, b) => a.views - b.views,
+      sortOrder: sortedInfo.columnKey === 'views' && sortedInfo.order,
+    }, {
+      title: '发布时间',
+      dataIndex: 'createAt',
+      align: "center",
+      sorter: (a, b) => a.createAt > b.createAt,
+      sortOrder: sortedInfo.columnKey === 'createAt' && sortedInfo.order,
+    }, {
+      title: '推荐',
+      dataIndex: 'isRecommend',
+      align: "center",
+      sorter: (a, b) => a.isRecommend - b.isRecommend,
+      sortOrder: sortedInfo.columnKey === 'isRecommend' && sortedInfo.order,
+      render: (text, record) => (
+          record.isRecommend === true ? <Tag color="#108ee9">是</Tag>
+          : <Tag color="#e53935">否</Tag>
+        )
+    }, {
+      title: '状态',
+      dataIndex: 'status',
+      align: "center",
+      render: (text, record) => {
+        switch(record.status) {
+          case 0: 
+            return <Tag color="red">草稿</Tag>
+          case 1: 
+            return <Tag color="#108ee9">发布</Tag>
+          default:
+            return <Tag color="#e53935">删除</Tag>
+        }
+      }}, {
+      title: '操作',
+      align: "center",
+      render: (text, record) => (
+          <span>
+          {record.status === 0 ? <Tag color="#108ee9" data-id={record._id} onClick = {this.testClock}>发布</Tag>
+          : ''}
+          {record.isRecommend === true ? <Tag color="#108ee9" data-id={record._id} onClick = {this.recommendArticles.bind(this, record._id, false)}>取消推荐</Tag>
+          : ''}
+          <Tag color="#108ee9"><Link to={`/home/article/write/${record._id}`}>查看</Link></Tag>
+          <Tag color="#108ee9"><Link to={`/home/article/write/${record._id}`}>编辑</Link></Tag>
+          </span>
+        )
+    }, 
+  ];
+
+  const rowSelection = {
+
+      onChange: (selectedRowKeys, selectedRows) => {
+        const selectedIds = selectedRows.map((item) => {
+          return item._id;
+        })
+        this.setState({
+          selectedRowKeys: selectedRowKeys,
+          selectedArticle: selectedIds
+        })
+      },
+      getCheckboxProps: record => ({
+        id: record.id,
+      }),
+      selectedRowKeys: this.state.selectedRowKeys,
     };
-  
-    handleChange = (pagination, filters, sorter) => {
-      console.log('Various parameters', pagination, filters, sorter);
-      this.setState({
-        filteredInfo: filters,
-        sortedInfo: sorter,
-      });
-    }
-  
-    clearFilters = () => {
-      this.setState({ filteredInfo: null });
-    }
-  
-    clearAll = () => {
-      this.setState({
-        filteredInfo: null,
-        sortedInfo: null,
-      });
-    }
-  
-    setAgeSort = () => {
-      this.setState({
-        sortedInfo: {
-          order: 'descend',
-          columnKey: 'age',
-        },
-      });
-    }
-  
-    render() {
-      let { sortedInfo } = this.state;
-      sortedInfo = sortedInfo || {};
-      const colorArray = ["#00796b", "#8e24aa", "#1e88e5", "#fb8c00", "#8e24aa"];
-
-      const columns = [{
-        title: '标题',
-        dataIndex: 'title',
-        align: "center",
-        sorter: (a, b) => a.title > b.title,
-        sortOrder: sortedInfo.columnKey === 'title' && sortedInfo.order,
-      }, {
-        title: '类别',
-        dataIndex: 'category',
-        align: "center",
-        sorter: (a, b) => a.category < b.category,
-        sortOrder: sortedInfo.columnKey === 'category' && sortedInfo.order,
-      }, {
-        title: '标签',
-        width: "250px",
-        dataIndex: 'tags',
-        render: (text, record) => {
-            let length = colorArray.length;
-            return (<span>
-                {record.tags.map((item, index) => {
-                    return <Tag key={index} color={colorArray[index % length]}>{item}</Tag>
-                })}
-            </span>)
-            }
-      }, {
-        title: '浏览量',
-        dataIndex: 'views',
-        align: "center",
-        sorter: (a, b) => a.views - b.views,
-        sortOrder: sortedInfo.columnKey === 'views' && sortedInfo.order,
-      }, {
-        title: '推荐',
-        dataIndex: 'recommend',
-        align: "center",
-        sorter: (a, b) => a.recommend - b.recommend,
-        sortOrder: sortedInfo.columnKey === 'recommend' && sortedInfo.order,
-        render: (text, record) => (
-            record.recommend === 1 ? <Tag color="#108ee9">是</Tag>
-            : <Tag color="#e53935">否</Tag>
-          )
-      }, {
-        title: '状态',
-        dataIndex: 'status',
-        align: "center",
-        sorter: (a, b) => a.status - b.status,
-        sortOrder: sortedInfo.columnKey === 'status' && sortedInfo.order,
-        render: (text, record) => (
-            record.status === 1 ? <Tag color="#108ee9">发布</Tag>
-            : <Tag color="red">草稿</Tag>
-          )
-      }, {
-        title: '发布时间',
-        dataIndex: 'pushDate',
-        align: "center",
-        sorter: (a, b) => a.pushDate > b.pushDate,
-        sortOrder: sortedInfo.columnKey === 'pushDate' && sortedInfo.order,
-      }, {
-        title: '操作',
-        align: "center",
-        render: (text, record) => (
-            <span>
-            {record.status === 0 ? <Tag color="#108ee9">发布</Tag>
-            : ''}
-            <Tag color="#108ee9"><Link to={`/home/article/write/${record.id}`}>查看</Link></Tag>
-            <Tag color="#108ee9"><Link to={`/home/article/write/${record.id}`}>编辑</Link></Tag>
-            </span>
-          )
-      }, 
-    ];
-
-    const rowSelection = {
-        onChange: (selectedRowKeys, selectedRows) => {
-          console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        },
-        getCheckboxProps: record => ({
-          id: record.id,
-        }),
-      };
-      return (
-        <div>
-          <CustomBreadcrumb arr={['显示', '表格']}/>
-          <Card>
-            <div className="table-operations">
-                <Button onClick={this.setAgeSort}>Sort age</Button>
-                <Button onClick={this.clearFilters}>Clear filters</Button>
-                <Button onClick={this.clearAll}>Clear filters and sorters</Button>
-            </div>
-            <Table rowSelection={rowSelection} align="center" bordered columns={columns} dataSource={data} onChange={this.handleChange} />
-          </Card>
-        </div>
-      );
-    }
+    
+    return (
+      <div>
+        <CustomBreadcrumb arr={['博客模块', '文章管理']}/>
+        <Card>
+          <div className="table-operations">
+              <Tag color="green" onClick={this.filterArticle.bind(this, "articleList")}>所有文章</Tag>
+              <Tag color="cyan" onClick={this.filterArticle.bind(this, "hasPublish")}>已发布</Tag>
+              <Tag color="magenta" onClick={this.filterArticle.bind(this, "draftBox")}>草稿箱</Tag>
+              <Tag color="red" onClick={this.filterArticle.bind(this, "hasDelete")}>垃圾箱</Tag>
+              <Tag color="#e53935" onClick={this.deleteArticles}>删除</Tag>
+              <Tag color="#2db7f5" onClick={this.recommendArticles.bind(this, null, true)}>设为推荐</Tag>
+          </div>
+          <Table rowSelection={rowSelection} rowKey={record =>record.id} bordered columns={columns} dataSource={this.state.articleList} />
+        </Card>
+      </div>
+    );
+  }
 }
 
 

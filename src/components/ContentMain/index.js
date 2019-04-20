@@ -5,19 +5,21 @@ import PrivateRoute from '../PrivateRoute'
 
 const Home = LoadableComponent(()=>import('../../routes/Home/index'))  //参数一定要是函数，否则不会懒加载，只会代码拆分
 
-//基本组件Demo
+//文章管理
 const ArticleManage = LoadableComponent(()=>import('../../routes/Article/Manage/index'))
 const ArticleWrite = LoadableComponent(()=>import('../../routes/Article/Write/index'))
+const ArticleCategory = LoadableComponent(()=>import('../../routes/Article/Category/index'))
 
-//导航组件Demo
-const DropdownDemo = LoadableComponent(()=>import('../../routes/Navigation/DropdownDemo/index'))
-const MenuDemo = LoadableComponent(()=>import('../../routes/Navigation/MenuDemo/index'))
-const StepsDemo = LoadableComponent(()=>import('../../routes/Navigation/StepsDemo/index'))
+//页面展示
+const Personal = LoadableComponent(()=>import('../../routes/Show/Personal/index'))
+const Carousel = LoadableComponent(()=>import('../../routes/Show/Carousel/index'))
 
-//输入组件Demo
-const FormDemo1 = LoadableComponent(()=>import('../../routes/Entry/FormDemo/FormDemo1'))
-const FormDemo2 = LoadableComponent(()=>import('../../routes/Entry/FormDemo/FormDemo2'))
-const UploadDemo = LoadableComponent(()=>import('../../routes/Entry/UploadDemo/index'))
+//友情链接
+const FriendLink = LoadableComponent(()=>import('../../routes/FriendLink/index'))
+
+//访客页面
+const VisitorRecord = LoadableComponent(()=>import('../../routes/Visitor/Record/index'))
+const BlackList = LoadableComponent(()=>import('../../routes/Visitor/BlackList/index'))
 
 //显示组件Demo
 const CarouselDemo = LoadableComponent(()=>import('../../routes/Display/CarouselDemo/index'))
@@ -56,17 +58,16 @@ class ContentMain extends React.Component {
 
           <PrivateRoute exact path='/home/article/write' component={ArticleWrite}/>
           <PrivateRoute exact path='/home/article/list' component={ArticleManage}/>
-          <PrivateRoute exact path='/home/article/category' component={MenuDemo}/>
+          <PrivateRoute exact path='/home/article/category' component={ArticleCategory}/>
 
-          <PrivateRoute exact path='/home/display/author' component={StepsDemo}/>
-          <PrivateRoute exact path='/home/display/carousel' component={FormDemo1}/>
+          <PrivateRoute exact path='/home/display/personal' component={Personal}/>
+          <PrivateRoute exact path='/home/display/carousel' component={Carousel}/>
 
-          <PrivateRoute exact path='/home/visitor/record' component={FormDemo2}/>
-          <PrivateRoute exact path='/home/visitor/statistical' component={UploadDemo}/>
-          <PrivateRoute exact path='/home/visitor/blacklist' component={CarouselDemo}/>
+          <PrivateRoute exact path='/home/links' component={FriendLink}/>
 
-          <PrivateRoute exact path='/home/links' component={CollapseDemo}/>
-          
+          <PrivateRoute exact path='/home/visitor/record' component={VisitorRecord}/>
+          <PrivateRoute exact path='/home/visitor/blacklist' component={BlackList}/>
+
           <PrivateRoute exact path='/home/about' component={About}/>
 
           <Redirect exact from='/' to='/home'/>

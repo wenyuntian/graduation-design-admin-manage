@@ -1,0 +1,8 @@
+.upload-image .ant-upload-list-picture-card .ant-upload-list-item,
+.upload-image .ant-upload.ant-upload-select-picture-card {
+    width: 150px;
+    height: 150px;
+}
+.carousel .ant-card {
+    margin-bottom: 12px;
+}

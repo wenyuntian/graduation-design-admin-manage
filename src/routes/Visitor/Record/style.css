@@ -1,0 +1,33 @@
+.visitor-content .ant-list-header{
+    font-weight: 900;
+}
+.visitor .ant-card-body{
+    padding: 0;
+    margin-bottom: 25px;
+}
+.categories{
+    margin: 0;
+}
+
+.content-box {
+    width: 100%;
+}
+.content-box .ant-tag{
+    float: right;
+}
+.visitor-record .ant-list-header {
+    padding-bottom: 0;
+}
+.visitor-record .ant-list-item {
+    padding: 5px 0;
+}
+.tag-filter .ant-list-item{
+    padding: 3px 0;
+}
+.tag-filter span {
+    cursor: pointer;
+    color: #37474f;
+}
+.tag-filter i {
+    margin-right: 8px;
+}

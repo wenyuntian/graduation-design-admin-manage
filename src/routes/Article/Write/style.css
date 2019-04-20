@@ -11,7 +11,7 @@
 .aside-title .ant-card-body{
     padding: 0;
 }
-.ant-list-header {
+.article-list .ant-list-header, .category-list .ant-list-header{
     font-weight: 900;
     font-size: 14px;
     margin-top: 25px;
@@ -19,8 +19,11 @@
 .ant-list-split .ant-list-header {
     border-bottom: none;
 }
-.article-list button, .category-list button{
-    border: none;
+.content-box {
+    width: 100%;
+}
+.content-box .ant-tag{
+    float: right;
 }
 .article-list-icon{
     margin-right: 3px;
