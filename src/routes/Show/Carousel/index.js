@@ -1,19 +1,16 @@
 import React from 'react'
-import {Icon, Modal, Button, Col, Upload, Row, Card, BackTop} from 'antd'
+import {Icon, Modal, Col, Upload, Row, Card, BackTop} from 'antd'
 import CustomBreadcrumb from '../../../components/CustomBreadcrumb/index'
+import fetch from '../../../utils/fetch'
 import './style.css'
 
 class PicturesWall extends React.Component {
   state = {
     previewVisible: false,
     previewImage: '',
-    fileList: [{
-      uid: '-1',
-      name: 'xxx.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    }],
+    fileList: []
   };
+
 
   handleCancel = () => this.setState({ previewVisible: false })
 
@@ -24,10 +21,24 @@ class PicturesWall extends React.Component {
     });
   }
 
-  handleChange = ({ fileList }) => this.setState({ fileList })
+  componentWillReceiveProps(props) {
+    this.setState({fileList: props.fileList})
+  }
+
+  handleChange = (({file, fileList }) => {
+
+    if(file.status === 'removed') {
+      const id = file.id ? file.id : file.response.carousel._id;
+      const path = file.url ? file.url : file.response.carousel.path
+      fetch('post', '/api/carousel/update', {id: id, path: path});
+    }
+    this.setState({ fileList })
+  })
 
   render() {
-    const { previewVisible, previewImage, fileList } = this.state;
+    const { previewVisible, previewImage } = this.state;
+    const fileList = this.state.fileList;
+
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -38,7 +49,7 @@ class PicturesWall extends React.Component {
       <div className="clearfix">
         <Upload 
           className="upload-image"
-          action="//jsonplaceholder.typicode.com/posts/"
+          action={`/api/carousel/update?type=${this.props.type}`}
           listType="picture-card"
           fileList={fileList}
           onPreview={this.handlePreview}
@@ -55,6 +66,25 @@ class PicturesWall extends React.Component {
 }
   
 class Carousel extends React.Component {
+  state = {
+    adminList: [],
+    frontList: []
+  }
+
+  componentWillMount() {
+    this.getCarouselList();
+    this.getCarouselList();
+  }
+
+  getCarouselList = (type) => {
+    fetch('get', '/api/carousel/list', null, (response) => {
+      console.log(response.data.adminCarouselList)
+      this.setState({
+        adminList: response.data.adminCarouselList,
+        frontList: response.data.frontCarouselList
+      })
+    })
+  }
 
   render() {
     return (
@@ -63,10 +93,10 @@ class Carousel extends React.Component {
         <Row gutter={18}>
             <Col span={24}>
                 <Card title='后台首页轮播图'>
-                  <PicturesWall />
+                  <PicturesWall type="0" fileList={this.state.adminList}/>
                 </Card>
                 <Card title='博客展示轮播图'>
-                  <PicturesWall />
+                  <PicturesWall type="1" fileList={this.state.frontList}/>
                 </Card>
             </Col>
         </Row>

@@ -109,7 +109,8 @@ const ModifyPassword = Form.create({ name: 'modify_password' })(ModifyPasswordFo
 
 class Persional extends React.Component {
   state = {
-    administrator: {}
+    administrator: {},
+    newInformation: {}
   }
 
   componentWillMount() {
@@ -120,9 +121,36 @@ class Persional extends React.Component {
     if(!!url) {
       this.setState({
         administrator: {
+          ...this.state.administrator,
           image: url,
-          ...this.state.administrator
         }
+      })
+    }
+  }
+
+  changeInformation = (type, e) => {
+    const information = {...this.state.newInformation}
+    information[type] = e.target.value;
+    
+    this.setState({
+      newInformation: information
+    })
+  }
+
+  submitInformation = (type) => {
+    const administrator = {};
+    const value = this.state.newInformation[type];
+
+    if(!!value) {
+
+      administrator[type] = value;
+      fetch('post', '/api/administrator/update', {administrator: administrator}, (response) => {
+        this.setState({
+          administrator: {
+            ...this.state.administrator,
+            ...administrator,
+          }
+        })
       })
     }
   }
@@ -205,10 +233,10 @@ class Persional extends React.Component {
                                 <span className="information-item">姓名</span>
                                 <Row gutter={8}>
                                     <Col span={18}>
-                                        <Input ref={input => this.input = input} placeholder="姓名"/>
+                                        <Input value={this.state.newInformation.name} onChange={this.changeInformation.bind(this, 'name')} placeholder="姓名"/>
                                     </Col>
                                     <Col span={6}>
-                                        <Button type="primary">修改</Button>
+                                        <Button type="primary" onClick={this.submitInformation.bind(this, 'name')}>修改</Button>
                                     </Col>
                                 </Row>
                             </div>
@@ -218,10 +246,10 @@ class Persional extends React.Component {
                                 <span className="information-item">座右铭</span>
                                 <Row gutter={8}>
                                     <Col span={18}>
-                                        <Input placeholder="座右铭"/>
+                                        <Input value={this.state.newInformation.motto} onChange={this.changeInformation.bind(this, 'motto')} placeholder="座右铭"/>
                                     </Col>
                                     <Col span={6}>
-                                        <Button type="primary">修改</Button>
+                                        <Button type="primary" onClick={this.submitInformation.bind(this, 'motto')}>修改</Button>
                                     </Col>
                                 </Row>
                             </div>
@@ -231,10 +259,10 @@ class Persional extends React.Component {
                                 <span className="information-item">居住地</span>
                                 <Row gutter={8}>
                                     <Col span={18}>
-                                        <Input placeholder="居住地"/>
+                                        <Input value={this.state.newInformation.address} onChange={this.changeInformation.bind(this, 'address')} placeholder="居住地"/>
                                     </Col>
                                     <Col span={6}>
-                                        <Button type="primary">修改</Button>
+                                        <Button type="primary" onClick={this.submitInformation.bind(this, 'address')}>修改</Button>
                                     </Col>
                                 </Row>
                             </div>
@@ -244,10 +272,10 @@ class Persional extends React.Component {
                                 <span className="information-item">职业</span>
                                 <Row gutter={8}>
                                     <Col span={18}>
-                                        <Input placeholder="职业"/>
+                                        <Input value={this.state.newInformation.profession} onChange={this.changeInformation.bind(this, 'profession')} placeholder="职业"/>
                                     </Col>
                                     <Col span={6}>
-                                        <Button type="primary">修改</Button>
+                                        <Button type="primary" onClick={this.submitInformation.bind(this, 'profession')}>修改</Button>
                                     </Col>
                                 </Row>
                             </div>
@@ -257,10 +285,10 @@ class Persional extends React.Component {
                                 <span className="information-item">邮箱</span>
                                 <Row gutter={8}>
                                     <Col span={18}>
-                                        <Input placeholder="邮箱"/>
+                                        <Input value={this.state.newInformation.email} onChange={this.changeInformation.bind(this, 'email')} placeholder="邮箱"/>
                                     </Col>
                                     <Col span={6}>
-                                        <Button type="primary">修改</Button>
+                                        <Button type="primary" onClick={this.submitInformation.bind(this, 'email')}>修改</Button>
                                     </Col>
                                 </Row>
                             </div>

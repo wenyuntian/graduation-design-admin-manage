@@ -1,5 +1,6 @@
 import React from 'react'
 import {Carousel} from 'antd'
+import fetch from '../../utils/fetch'
 import './style.css'
 
 const imgs = [
@@ -40,7 +41,25 @@ function getAnimation(animations){
 
 class Home extends React.Component {
   state = {
-    current:0
+    current: 0,
+    adminCarouselList: imgs
+  }
+
+  componentWillMount() {
+    this.getCarouselList();
+  }
+   
+  getCarouselList = () => {
+    fetch('get', '/api/carousel/list', null, (response) => {
+      const adminCarouselList = response.data.adminCarouselList;
+      if(adminCarouselList.length > 0) {
+        this.setState({
+          adminCarouselList: adminCarouselList.map((item) => {
+            return item.url;
+          })
+        })
+      }
+    })
   }
 
   animations = getAnimation(animations)
@@ -55,13 +74,13 @@ class Home extends React.Component {
 
   }
   render() {
-    const { current} = this.state;
+    const { current, adminCarouselList} = this.state;
     const length = imgs.length;
 
     return (
       <div style={styles.bg} className='home'>
         <Carousel speed={100} arrows effect='fade' afterChange={(current)=>this.setState({current})} autoplay className='size'>
-          {imgs.map((item, index)=> {
+          {adminCarouselList.map((item, index)=> {
             return <div key={item}>
                     <div className='size' style={{backgroundImage:`url(${item})`}}>
                       <div className='text'>
